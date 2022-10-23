@@ -82,11 +82,42 @@ En esta tercera actividad deberemos Crear un script que mueva el objeto hacia un
           ![Gif de demostración 4](demo4.gif)
           
 8. Crear una escena simple sobre la que probar diferentes configuraciones de objetos físicos en Unity. La escena debe tener un plano a modo de suelo, dos esferas y un cubo.
-    - Ninguno de los objetos será físico.
-    - Las esfera tiene físicas, el cubo no, pero se puede mover por el controlador en 3ª persona de los starter Assets.
-    - Las esferas y el cubo tienen físicas. El cubo inicialmente está posicionado más alto que alguna de las esferas, con el mismo valor de x, z.
-    - Una escena similar a la c, pero alguna esfera tiene 10 veces la masa del cubo.
-    - Las esferas tienen físicas y el cubo es de tipo IsTrigger estático.
-    - Las esferas tienen físicas, el cubo es de tipo IsTrigger y cinemático.
-    - Las esferas tienen físicas, el cubo es de tipo IsTrigger y mecánico.
-    - Una esfera y el cubo son físicos y la esfera tiene 10 veces la masa del cubo, se impide la rotación del cubo sobre el plano XZ.
+    - a. Ninguno de los objetos será físico.
+        - En este caso, al arrancar al juego, todos los objetos permanecerán inmóviles en la escena.
+
+          ![Gif de demostración 5](demo5.gif)
+
+    - b. Las esfera tiene físicas, el cubo no, pero se puede mover por el controlador en 3ª persona de los starter Assets.
+        - En este caso, al arrancar al juego, las dos esferas caerán al suelo si estaban elevadas con respecto al mismo y cuando choquemos contra ellas con el cubo las desplazaremos.
+
+          ![Gif de demostración 6](demo6.gif)
+
+    - c. Las esferas y el cubo tienen físicas. El cubo inicialmente está posicionado más alto que alguna de las esferas, con el mismo valor de x, z.
+        - En este caso, al arrancar al juego, las dos esferas caerán al suelo si estaban elevadas con respecto al mismo y el cubo caerá encima de una de las esferas, botará verticalmente y volverá a caer manteniéndose en equilibrio sobre la esfera.
+
+          ![Gif de demostración 7](demo7.gif)
+
+    - d. Una escena similar a la c, pero alguna esfera tiene 10 veces la masa del cubo.
+        - En este caso, sucederá lo mismo que en la situación c, solo que el rebote será más débil.
+
+          ![Gif de demostración 8](demo8.gif)
+
+    - e. Las esferas tienen físicas y el cubo es de tipo IsTrigger estático.
+        - En este caso, si colocamos una esfera encima de un cubo y dejamos que caiga encima, veremos que lo traspasará.
+
+          ![Gif de demostración 9](demo9.gif)
+
+    - f. Las esferas tienen físicas, el cubo es de tipo IsTrigger y cinemático.
+        - En este caso, veremos que sucederá lo mismo que en el caso anterior.
+
+          ![Gif de demostración 10](demo10.gif)
+
+    - g. Las esferas tienen físicas, el cubo es de tipo IsTrigger y mecánico.
+        - En este caso, veremos que tanto la esfera como el cubo caerán, pero el cubo traspasará el suelo y seguirá cayendo indefinidamente.
+
+          ![Gif de demostración 11](demo11.gif)
+
+    - h. Una esfera y el cubo son físicos y la esfera tiene 10 veces la masa del cubo, se impide la rotación del cubo sobre el plano XZ.
+        - En este caso, si dejamos caer el cubo sobre la esfera, pero el cubo no está exactamente en la misma posición XZ que la esfera, sino que está ligeramente desplazado, veremos que este se deslizará sobre la esfera hasta caer al suelo, manteniendo su rotación XZ inicial en todo momento, rotando un poco en yaw (rotación sobre el plano Y). La esfera también se desplazará un poco afectada por el cubo.
+
+          ![Gif de demostración 12](demo12.gif)
