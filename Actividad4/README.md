@@ -65,22 +65,21 @@ Actividades a realizar:
         public Transform Goal;
         public float MovementSpeed = 1.0f;
         public float AcceptanceRadius = 1.0f;
+        public float SlerpFactor = 0.5f;
 
         void Update()
         {
-            Vector2 transformXZ = new Vector2(transform.position.x, transform.position.z);
-            Vector2 goalXZ = new Vector2(Goal.position.x, Goal.position.z);
-            Vector2 transformToGoalXZ = goalXZ - transformXZ;
-            float transformToGoalDistance = transformToGoalXZ.magnitude;
-            if (transformToGoalDistance > AcceptanceRadius)
+            Vector3 goalPositionAtSelfHeight = new Vector3(Goal.position.x, transform.position.y, Goal.position.z);
+            if (Vector3.Distance(transform.position, goalPositionAtSelfHeight) > AcceptanceRadius)
             {
-                Vector3 movementDirection = new Vector3(transformToGoalXZ.x, 0.0f, transformToGoalXZ.y) / transformToGoalDistance;
-                transform.Translate(movementDirection * MovementSpeed * Time.deltaTime);
+                Quaternion DesiredRotation = Quaternion.LookRotation(goalPositionAtSelfHeight - transform.position, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, DesiredRotation, SlerpFactor);
+                transform.Translate(Vector3.forward * MovementSpeed * Time.deltaTime);
             }
         }
     }
     ```
 
-    Lo único a destacar es que moveremos al perseguidor solamente cuando la distancia entre él y su objetivo sea mayor que su *AcceptanceRadius*, a fin de evitar el efecto conocido como *jittering*, con el cual el perseguidor se quedaría oscilando indefinidamente alrededor de su objetivo porque nunca se daría el caso de que su posición fuera exactamente la misma que la de su objetivo. También ignoramos por completo la coordenada vertical Y en el momento de hacer el movimiento porque por ahora nos interesa que los actores mantengan siempre la misma posición vertical. Una vez lista la script, crearemos un par de cápsulas que se encarguen de perseguir cada una a su objetivo. La cápsula de un gris más oscuro perseguirá una especie de banderín de meta que crearemos en la escena con un cilindro y un plano y la cápsula de un gris más clarito perseguirá al player. Este es el resultado:
+    Moveremos al perseguidor primero rotándolo suavemente hacia su objetivo y luego moviéndolo en su dirección frontal. Solamente lo haremos cuando la distancia entre él y su objetivo sea mayor que su *AcceptanceRadius*, a fin de evitar el efecto conocido como *jittering*, con el cual el perseguidor se quedaría oscilando indefinidamente alrededor de su objetivo porque nunca se daría el caso de que su posición fuera exactamente la misma que la de su objetivo. También ignoramos por completo la coordenada vertical Y en el momento de hacer el movimiento porque por ahora nos interesa que los actores mantengan siempre la misma posición vertical. Una vez lista la script, crearemos un par de cápsulas que se encarguen de perseguir cada una a su objetivo. La cápsula de un gris más oscuro perseguirá una especie de banderín de meta que crearemos en la escena con un cilindro y un plano y la cápsula de un gris más clarito perseguirá al player. Este es el resultado con un *SlerpFactor* de 0,01:
 
     !["Gif de demostración 2"](demo2.gif)
