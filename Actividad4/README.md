@@ -24,7 +24,7 @@ Actividades a realizar:
     ```
 
 2. Implementar una UI que permita configurar con qué velocidad te moverás: turbo o normal. También debe mostrar la cantidad de objetos recolectados y si chocas con alguno especial restar fuerza.
-    - Para este ejercicio lo primero será ajustar el script *PlayerController* para que el player pueda moverse con un sprint que podremos activar y desactivar desde un botón que crearemos en la UI:
+    - Para este ejercicio lo primero será ajustar el script *PlayerController* para que el player pueda moverse con un sprint que podremos activar y desactivar desde un toggle que crearemos en la UI:
 
     ```
     public class PlayerController : MonoBehaviour
@@ -64,9 +64,9 @@ Actividades a realizar:
     }
     ```
 
-    Tendremos una variable *SprintMultiplier*, que definirá la potencia del sprint, y una variable *MovementSpeedModifier* donde almacenaremos todos los modificadores de velocidad que reciba el personaje.También tendremos un método público que se llamará desde la UI (en concreto desde un elemento *Toggle*) para aplicar (multiplicar) y para retirar (dividir) el efecto del sprint en el modificador de velocidad. Más tarde, solo tendremos que multiplicar el valor del *MovementSpeedModifier* a la *MovementSpeed* para obtener la que queremos usar.
+      Tendremos una variable *SprintMultiplier*, que definirá la potencia del sprint, y una variable *MovementSpeedModifier* donde almacenaremos todos los modificadores de velocidad que reciba el personaje. También tendremos un método público que se llamará desde la UI (en concreto desde un elemento *Toggle*) para aplicar (multiplicar) y para retirar (dividir) el efecto del sprint en el modificador de velocidad. Más tarde, solo tendremos que multiplicar el valor del *MovementSpeedModifier* a la *MovementSpeed* para obtener la velocidad de movimiento que queremos usar.
 
-    Necesitaremos también tanto una clase *Collectable*, que poseerán todos los objetos coleccionables; como una clase *Collecter*, que deberemos asignar a nuestro player:
+      Necesitaremos también tanto una clase *Collectable*, que poseerán todos los objetos coleccionables; como una clase *Collecter*, que deberemos asignar a nuestro player:
 
     ```
     public class Collectable : MonoBehaviour
@@ -100,9 +100,9 @@ Actividades a realizar:
     }
     ```
 
-    Los objetos de tipo *Collectable* estarán a la escucha de solapamientos con posibles objetos de tipo *Collecter* y, en caso de que uno se produzca, notificará a este, que actualizará el contador de objetos que lleva recogidos y actualizará el texto correspondiente de la UI. Tras todo esto, el *Collectable* se destruirá.
+      Los objetos de tipo *Collectable* estarán a la escucha de solapamientos con posibles objetos de tipo *Collecter* y, en caso de que un solapamiento se produzca, notificará al *Collecter* solapado, que actualizará el contador de objetos que lleva recogidos y actualizará el texto correspondiente de la UI. Tras todo esto, el *Collectable* se destruirá.
 
-    Para los objetos que deban restar fuerza al personaje, crearemos un script *Glue* que será una especie de losa de pegamento que estará colocada en el suelo y que, al ser pisada por el el player, este será ralentizado. Para eso, detectaremos solapamientos con un *PlayerController* y, en caso de encontrarlo, al comenzar el solapamiento aplicaremos un modificador de velocidad de movimiento correspondiente a la ralentización y, al terminar el solapamiento, retiraremos este modificador.
+      Para los objetos que deban restar fuerza al personaje, crearemos un script *Glue* que será una especie de losa de pegamento que estará colocada en el suelo y que, al ser pisada por el el player, este será ralentizado. Para eso, detectaremos solapamientos con un *PlayerController* y, en caso de encontrarlo, al comenzar el solapamiento aplicaremos un modificador de velocidad de movimiento correspondiente a la ralentización y, al terminar el solapamiento, retiraremos este modificador.
 
     ```
     public class Glue : MonoBehaviour
@@ -111,30 +111,30 @@ Actividades a realizar:
         
         void OnTriggerEnter(Collider other)
         {
-            SetPlayerControllerSlowing(other, true);
+            ApplyMovementSpeedModifierToPlayerController(other, 1.0f / SlowingPower);
         }
         
         void OnTriggerExit(Collider other)
         {
-            SetPlayerControllerSlowing(other, false);
+            ApplyMovementSpeedModifierToPlayerController(other, SlowingPower);
         }
 
-        void SetPlayerControllerSlowing(Collider other, bool setActive)
+        void ApplyMovementSpeedModifierToPlayerController(Collider other, float modifier)
         {
             PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
             if (playerController)
             {
-                playerController.ApplyMovementSpeedModifier(setActive ? 1.0f / SlowingPower : SlowingPower);
+                playerController.ApplyMovementSpeedModifier(modifier);
             }
         }
     }
     ```
 
-    Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *Glue* con unos *SlowingPower* de 2, 4 y 8 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
+      Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *Glue* con unos *SlowingPower* de 2, 4 y 8 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
 
     ![Gif de demostración 1](demo1.gif)
 
-3. Agregar a tu escena un objeto que al ser recolectado por el jugador haga que otro objetos obstáculos se desplacen de su trayectoria.
+3. Agregar a tu escena un objeto que al ser recolectado por el jugador haga que otros objetos obstáculos se desplacen de su trayectoria.
     - Para este ejercicio simplemente crearemos un script *Obstacle*, así como un script *ObstacleMover*. El *ObstacleMover* detectará solapamientos con objetos de tipo *PlayerController*. En cuanto detecte uno, buscará todos los objetos de tipo *Obstacle* en la escena y les aplicará una fuerza de repulsión tomando como epicentro la posición del jugador, tras lo cual se destruirá.
 
     ```
@@ -167,7 +167,7 @@ Actividades a realizar:
     }
     ```
 
-    Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *ObstacleMover* con unas *repelForce* de 1, 2 y 4 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
+      Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *ObstacleMover* con unas *repelForce* de 1, 2 y 4 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
 
     ![Gif de demostración 2](demo2.gif)
 
