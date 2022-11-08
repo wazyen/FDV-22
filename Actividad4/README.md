@@ -200,7 +200,7 @@ Actividades a realizar:
     
     Una vez lista la script, crearemos en la escena un par de portales para probarla. Los haremos a partir de una esfera y la estiraremos para que tenga más o menos forma de portal. Como al hacerlo el *Sphere Collider* dejará de encajar bien con la figura, lo cambiaremos por un *Box Collider*, que encajará mucho mejor. Será imprescindible marcar este colisionador como *isTrigger*. Para no tener que repetir todo el proceso, guardaremos el gameObject como prefab y colocaremos otro en la escena. Para distinguirlos, le asignaremos a uno un material de color azul y al otro uno de color naranja. Por último, referenciaremos cada uno de los portales en la script del otro recíprocamente dentro de la variable `public Portal Goal`. Listo, vamos a probarlo:
 
-    ![Gif de demostración 1](demo1.gif)
+    ![Gif de demostración 3](demo3.gif)
 5. Agrega un personaje que se dirija hacia un objetivo estático en la escena.
 6. Agrega un personaje que siga el movimiento del jugador.
     - Realizaremos estos dos últimos ejercicios conjuntamente porque creemos que una sola solución les puede valer a ambos. Crearemos un script que lo que haga sea perseguir el transform de un gameObject en la escena, ya sea este un objeto estático o el player:
@@ -228,4 +228,4 @@ Actividades a realizar:
 
     Moveremos al perseguidor primero rotándolo suavemente hacia su objetivo y luego moviéndolo en su dirección frontal. Solamente lo haremos cuando la distancia entre él y su objetivo sea mayor que su *AcceptanceRadius*, a fin de evitar el efecto conocido como *jittering*, con el cual el perseguidor se quedaría oscilando indefinidamente alrededor de su objetivo porque nunca se daría el caso de que su posición fuera exactamente la misma que la de su objetivo. También ignoramos por completo la coordenada vertical Y en el momento de hacer el movimiento porque por ahora nos interesa que los actores mantengan siempre la misma posición vertical. Una vez lista la script, crearemos un par de cápsulas que se encarguen de perseguir cada una a su objetivo. La cápsula de un gris más oscuro perseguirá una especie de banderín de meta que crearemos en la escena con un cilindro y un plano y la cápsula de un gris más clarito perseguirá al player. Este es el resultado con un *SlerpFactor* de 0,01:
 
-    !["Gif de demostración 2"](demo2.gif)
+    !["Gif de demostración 4"](demo4.gif)
