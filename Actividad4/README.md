@@ -11,19 +11,165 @@ Actividades a realizar:
     public class PlayerController : MonoBehaviour
     {
       public float MovementSpeed = 3.0f;
-      public float SprintMultiplier = 2.0f;
       public float RotationSpeed = 135.0f;
 
       void Update()
       {
-        Vector3 movementDirection = Input.GetAxisRaw("Vertical") * Vector3.forward;
-        float sprintValue = Input.GetKey(KeyCode.LeftShift) ? SprintMultiplier : 1.0f;
+        Vector3 movementDirection = Input.GetAxis("Vertical") * Vector3.forward;
         Vector3 rotationDirection = Input.GetAxis("Horizontal") * Vector3.up;
-        transform.Translate(movementDirection * MovementSpeed * Time.deltaTime * sprintValue);
-        transform.Rotate(rotationDirection * RotationSpeed * Time.deltaTime);
+        transform.Translate(movementDirection * MovementSpeed * Time.deltaTime);
+        transform.Rotate( rotationDirection * RotationSpeed * Time.deltaTime);
       }
     }
     ```
+
+2. Implementar una UI que permita configurar con qué velocidad te moverás: turbo o normal. También debe mostrar la cantidad de objetos recolectados y si chocas con alguno especial restar fuerza.
+    - Para este ejercicio lo primero será ajustar el script *PlayerController* para que el player pueda moverse con un sprint que podremos activar y desactivar desde un botón que crearemos en la UI:
+
+    ```
+    public class PlayerController : MonoBehaviour
+    {
+      public float MovementSpeed = 3.0f;
+      public float RotationSpeed = 135.0f;
+      
+      public float SprintMultiplier = 2.0f;
+      
+      private float MovementSpeedModifier = 1.0f;
+
+      void Update()
+      {
+        float currentMovementSpeed = MovementSpeed * MovementSpeedModifier;
+        Vector3 movementDirection = Input.GetAxis("Vertical") * Vector3.forward;
+        Vector3 rotationDirection = Input.GetAxis("Horizontal") * Vector3.up;
+        transform.Translate(movementDirection * currentMovementSpeed * Time.deltaTime);
+        transform.Rotate( rotationDirection * RotationSpeed * Time.deltaTime);
+      }
+
+      public void ToggleSprint(Toggle toggle)
+      {
+        if (toggle.isOn)
+        {
+          ApplyMovementSpeedModifier(SprintMultiplier);
+        }
+        else
+        {
+          ApplyMovementSpeedModifier(1.0f / SprintMultiplier);
+        }
+      }
+
+      public void ApplyMovementSpeedModifier(float modifier)
+      {
+        MovementSpeedModifier *= modifier;
+      }
+    }
+    ```
+
+    Tendremos una variable *SprintMultiplier*, que definirá la potencia del sprint, y una variable *MovementSpeedModifier* donde almacenaremos todos los modificadores de velocidad que reciba el personaje.También tendremos un método público que se llamará desde la UI (en concreto desde un elemento *Toggle*) para aplicar (multiplicar) y para retirar (dividir) el efecto del sprint en el modificador de velocidad. Más tarde, solo tendremos que multiplicar el valor del *MovementSpeedModifier* a la *MovementSpeed* para obtener la que queremos usar.
+
+    Necesitaremos también tanto una clase *Collectable*, que poseerán todos los objetos coleccionables; como una clase *Collecter*, que deberemos asignar a nuestro player:
+
+    ```
+    public class Collectable : MonoBehaviour
+    {
+        void OnTriggerEnter(Collider other)
+        {
+            Collecter collecter = other.gameObject.GetComponent<Collecter>();
+            if (collecter)
+            {
+                collecter.Collect(this);
+                Destroy(gameObject);
+            }
+        }
+    }
+    ```
+
+    ```
+    public class Collecter : MonoBehaviour
+    {
+        int NCollected = 0;
+        public Text NCollectedUILabel;
+
+        public void Collect(Collectable collectable)
+        {
+            ++NCollected;
+            if (NCollectedUILabel)
+            {
+                NCollectedUILabel.text = "x " + NCollected;
+            }
+        }
+    }
+    ```
+
+    Los objetos de tipo *Collectable* estarán a la escucha de solapamientos con posibles objetos de tipo *Collecter* y, en caso de que uno se produzca, notificará a este, que actualizará el contador de objetos que lleva recogidos y actualizará el texto correspondiente de la UI. Tras todo esto, el *Collectable* se destruirá.
+
+    Para los objetos que deban restar fuerza al personaje, crearemos un script *Glue* que será una especie de losa de pegamento que estará colocada en el suelo y que, al ser pisada por el el player, este será ralentizado. Para eso, detectaremos solapamientos con un *PlayerController* y, en caso de encontrarlo, al comenzar el solapamiento aplicaremos un modificador de velocidad de movimiento correspondiente a la ralentización y, al terminar el solapamiento, retiraremos este modificador.
+
+    ```
+    public class Glue : MonoBehaviour
+    {
+        public float SlowingPower = 2.0f;
+        
+        void OnTriggerEnter(Collider other)
+        {
+            SetPlayerControllerSlowing(other, true);
+        }
+        
+        void OnTriggerExit(Collider other)
+        {
+            SetPlayerControllerSlowing(other, false);
+        }
+
+        void SetPlayerControllerSlowing(Collider other, bool setActive)
+        {
+            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
+            if (playerController)
+            {
+                playerController.ApplyMovementSpeedModifier(setActive ? 1.0f / SlowingPower : SlowingPower);
+            }
+        }
+    }
+    ```
+
+    Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *Glue* con unos *SlowingPower* de 2, 4 y 8 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
+
+    ![Gif de demostración 1](demo1.gif)
+
+3. Agregar a tu escena un objeto que al ser recolectado por el jugador haga que otro objetos obstáculos se desplacen de su trayectoria.
+    - Para este ejercicio simplemente crearemos un script *Obstacle*, así como un script *ObstacleMover*. El *ObstacleMover* detectará solapamientos con objetos de tipo *PlayerController*. En cuanto detecte uno, buscará todos los objetos de tipo *Obstacle* en la escena y les aplicará una fuerza de repulsión tomando como epicentro la posición del jugador, tras lo cual se destruirá.
+
+    ```
+    public class Obstacle : MonoBehaviour
+    {
+        public void Repel(Transform epicenter, float repelForce)
+        {
+            transform.Translate((transform.position - epicenter.position).normalized * repelForce);
+        }
+    }
+    ```
+
+    ```
+    public class ObstacleMover : MonoBehaviour
+    {
+        public float repelForce = 1.0f;
+        
+        void OnTriggerEnter(Collider other)
+        {
+            PlayerController playerController = other.gameObject.GetComponent<PlayerController>();
+            if (playerController)
+            {
+                foreach (Obstacle obstacle in GameObject.FindObjectsOfType<Obstacle>())
+                {
+                    obstacle.Repel(playerController.transform, repelForce);
+                }
+                Destroy(gameObject);
+            }
+        }
+    }
+    ```
+
+    Para el siguiente ejemplo, utilizaremos 3 objetos de tipo *ObstacleMover* con unas *repelForce* de 1, 2 y 4 respectivamente. Una vez reunidas todas las piezas previamente expuestas, este es el resultado:
+
+    ![Gif de demostración 2](demo2.gif)
 
 4. Agrega un objeto que te teletransporte a otra zona de la escena.
     - Para este ejercicio hemos creado una script *Portal* que, cuando detecte solapamiento con algún componente de colisión, automáticamente teletransportará al gameObject dueño de dicha colisión a la posición de otro portal objetivo. Hemos usado la flag *IsTeleporting* para que, en el momento de hacer la teletransportación, cuando el portal destino detecte un nuevo solapamiento, lo ignore; y así evitar que se produzca un bucle infinito en que los dos portales se pasen la patata caliente indefinidamente el uno al otro hasta el fin de los tiempos.
