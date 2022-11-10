@@ -68,9 +68,6 @@ Con los sprites de caminar, creamos una animación de caminar. Con los sprites d
 
 Para el segundo zombie que deberá morir al tocarlo, deberemos crear un AnimatorController muy parecido al previamente mostrado, solo que cambiando el parámetro *IsWalking* por *IsDead*, el estado *Walking* por *Dead* y no añadir transición de *Dead* a *Idle* (ya que por ahora no va a poder resucitar). Una vez hecho esto, añadiremos un script *Fragile*, donde simplemente detectará alguna colisión con un GameObject de tipo *PlayerController* y, en caso afirmativo, avisará al Animator de que ya puede morirse. Es muy importante que dejemos el valor *Loop Time* a false en la animación de muerte para que no se repita en bucle.
 
-4. Crear las animaciones de Goblin. Añadir un script al zombie, para que al colisionar con Goblin, Goblin active la animación de atacar.
-
-
 Este es el resultado hasta ahora:
 
 !["Gif de demostración 1"](demo1.gif)
