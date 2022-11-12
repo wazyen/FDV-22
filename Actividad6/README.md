@@ -78,13 +78,13 @@ Este es el resultado hasta ahora:
 5. Pruebas con físicas 2D. Sobre la escena que has creado en los ejercicios anteriores, configura físicas 2D sobre los objetos de la siguiente forma:
 
 
-   1. Ninguno de los objetos será físico.
+   i. Ninguno de los objetos será físico.
 
 En este caso, los dos zombies se solaparán y no se detectará colisión.
 
 !["Gif de demostración 2"](demo2.gif)
 
-   2. Un objeto tiene físicas y el otro no.
+   ii. Un objeto tiene físicas y el otro no.
 
 En caso de que el player sea el que tiene físicas, colisionaremos con el zombie frágil, pero no podremos empujarlo; el segundo actuará como un muro inamovible. Esto sucede porque el motor de físicas, al detectar un solapamiento entre dos BoxCollider2D y siendo esta una situación intolerable, solo corregirá la posición del player porque es el único sobre el que tiene control.
 
@@ -94,7 +94,7 @@ En caso de que sea el zombie frágil el que tenga físicas, cuando colisionemos 
 
 !["Gif de demostración 4"](demo4.gif)
 
-   3. Ambos objetos tienen físicas.
+   iii. Ambos objetos tienen físicas.
 
 En este caso, colisionaremos y podremos empujar al otro zombie, pero sin llegar al punto de llevárnoslo por delante como pasaba antes. Esto sucederá porque el motor de físicas, al tener ya control sobre ambos, corregirá la posición de ambos de una forma proporcional e imparcial.
 
