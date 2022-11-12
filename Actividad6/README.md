@@ -65,7 +65,7 @@ Nada más empezar, buscamos y nos guardamos los componentes anteriormente mencio
 
 3. A partir de los sprites proporcionados, crear animaciones para el Zombie. Agregar un sprite zombie, con un collider2D, y crear un script, en el que el zombie, al colisionar con él cambie la animación a Dead.
 
-Con los sprites de caminar, creamos una animación de caminar. Con los sprites de idle, una animación de idle. Además, necesitaremos crear un AnimatorController. Este tendrá un parámetro booleano *IsWalking*, dos estados *Idle* y *Walk* y dos transiciones de un estado al otro que tendrán el parámetro *IsWalking* como condición (la transición *Idle->Walk* tendrá la condición a true, mientras que la transición *Walk->Idle* la tendrá a false). Es importante en este punto establecer el *HasExitTime* de ambas transiciones a false, así como su *TransitionOffset* y *TransitionDuration* a 0 para que transicione correctamente.
+Con los sprites de caminar, creamos una animación de caminar y con los sprites de idle, una animación de idle. Además, necesitaremos crear un AnimatorController. Este tendrá un parámetro booleano *IsWalking*, dos estados *Idle* y *Walk* y dos transiciones de un estado al otro que tendrán el parámetro *IsWalking* como condición (la transición *Idle->Walk* tendrá la condición a true, mientras que la transición *Walk->Idle* la tendrá a false). Es importante en este punto establecer el *HasExitTime* de ambas transiciones a false, así como su *TransitionOffset* y *TransitionDuration* a 0 para que transicione correctamente.
 
 !["Imagen 1"](image1.png)
 
