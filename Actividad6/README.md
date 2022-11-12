@@ -1,4 +1,4 @@
-# Actividad 5
+# Actividad 6
 
 En esta actividad realizaremos una introducción al 2D en Unity.
 
@@ -78,13 +78,13 @@ Este es el resultado hasta ahora:
 5. Pruebas con físicas 2D. Sobre la escena que has creado en los ejercicios anteriores, configura físicas 2D sobre los objetos de la siguiente forma:
 
 
-   i. Ninguno de los objetos será físico.
+`a. Ninguno de los objetos será físico.`
 
 En este caso, los dos zombies se solaparán y no se detectará colisión.
 
 !["Gif de demostración 2"](demo2.gif)
 
-   ii. Un objeto tiene físicas y el otro no.
+`b. Un objeto tiene físicas y el otro no.`
 
 En caso de que el player sea el que tiene físicas, colisionaremos con el zombie frágil, pero no podremos empujarlo; el segundo actuará como un muro inamovible. Esto sucede porque el motor de físicas, al detectar un solapamiento entre dos BoxCollider2D y siendo esta una situación intolerable, solo corregirá la posición del player porque es el único sobre el que tiene control.
 
@@ -94,13 +94,13 @@ En caso de que sea el zombie frágil el que tenga físicas, cuando colisionemos 
 
 !["Gif de demostración 4"](demo4.gif)
 
-   iii. Ambos objetos tienen físicas.
+`c. Ambos objetos tienen físicas.`
 
 En este caso, colisionaremos y podremos empujar al otro zombie, pero sin llegar al punto de llevárnoslo por delante como pasaba antes. Esto sucederá porque el motor de físicas, al tener ya control sobre ambos, corregirá la posición de ambos de una forma proporcional e imparcial.
 
 !["Gif de demostración 5"](demo5.gif)
 
-   4. Ambos objetos tienen físcas y uno de ellos tiene 10 veces más masa que el otro.
+`d. Ambos objetos tienen físcas y uno de ellos tiene 10 veces más masa que el otro.`
 
 En caso de que sea el player el que tenga 10 veces la masa del otro, lo empujaremos con más potencia que antes, aunque sí que ofrecerá una pequeña resistencia. Esto pasa porque el motor de físicas, aunque es verdad que corrige la posición de ambos, como el player pesa mucho más que el zombie frágil, al segundo le será mucho más difícil frenarlo porque el primero pesa mucho más. Es como comparar ser atropellados, a misma velocidad, por una bicicleta o por una moto.
 
@@ -110,13 +110,13 @@ En caso de que sea el zombie frágil el que tenga 10 veces la masa del player, a
 
 !["Gif de demostración 7"](demo7.gif)
 
-   5. Un objeto tiene físicas y el otro es IsTrigger.
+`e. Un objeto tiene físicas y el otro es IsTrigger.`
 
 En ambos casos pasará lo mismo: los dos zombies se solaparán.
 
 !["Gif de demostración 8"](demo8.gif)
 
-   6. Ambos objetos son físicos y uno de ellos está marcado como IsTrigger.
+`f. Ambos objetos son físicos y uno de ellos está marcado como IsTrigger.`
 
 El zombie que sea IsTrigger dejará de ser sujeto por el suelo y caerá indefinidamente.
 
@@ -124,7 +124,7 @@ El zombie que sea IsTrigger dejará de ser sujeto por el suelo y caerá indefini
 
 !["Gif de demostración 10"](demo10.gif)
 
-   7. Uno de los objetos es cinemático.
+`g. Uno de los objetos es cinemático.`
 
 En caso de que sea el player el objeto cinemático, nos llevaremos por delante al otro zombie sin resistencia cuando nos choquemos con él. Esto se debe a que, al ser cinemático, estamos negando al motor de físicas su derecho a corregir la posición de nuestro zombie.
 
