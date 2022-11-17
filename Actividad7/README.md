@@ -11,7 +11,7 @@ Assets escogidos para el mapa isométrico: https://assetstore.unity.com/packages
 
 2. Generar al menos 2 paletas para crear un mapa rectangular.
 
-Para generar una paleta, hay que abrir un `Window -> 2D -> Tile Palette` y desde ahí pulsar el nombre de la paleta activa (como uno de los paquetes que importé incluía ya una paleta hecha me salía esa) y luego en `Create New Palette` y escoger la ruta donde queremos guardarla. Tras seguir los pasos anteriores, solo hay que arrastrar un atlas o un conjunto de sprites a la paleta activa para incluirlos. Para las paletas isométricas tuve que hacer muchos ajustes en los tamaños de las celdas para que los sprites isométricos me encajasen en la cuadrícula y hubiese una continuidad visual al poner varios contiguos. Siguiendo este procedimiento, finalmente creé 3 paletas para los sprites rectos y 2 para los isométricos:
+Para generar una paleta, hay que abrir un `Window -> 2D -> Tile Palette` y desde ahí pulsar el nombre de la paleta activa y luego en `Create New Palette` y escoger la ruta donde queremos guardarla. Tras seguir los pasos anteriores, solo hay que arrastrar un atlas o un conjunto de sprites a la paleta activa para incluirlos en esa paleta. Para las paletas isométricas, hubo que hacer muchos ajustes en los tamaños de las celdas para que los sprites isométricos encajasen en la cuadrícula y hubiese una continuidad visual al poner varios contiguos. Siguiendo este procedimiento, finalmente creamos 3 paletas para los sprites rectos y 2 para los isométricos:
 
 ![Paleta Recta Background](paleta_rect_background.png)
 
@@ -44,7 +44,7 @@ Mientras que tanto el suelo como los edificios forman parte de tilemaps, todos l
 
 5. En el mapa convencional, incluir obstáculos y paredes.
 
-Con el mapa rectangular no hubo que hacer tantos ajustes de celdas ni poner tilemaps en Grids diferentes. Finalmente acabamos con 4 tilemaps diferentes:
+Con el mapa rectangular no hubo que hacer tantos ajustes de celdas ni poner tilemaps en Grids diferentes. Finalmente, acabamos con 4 tilemaps diferentes:
 
 - Background: Incluye el cielo.
 
