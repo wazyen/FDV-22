@@ -40,6 +40,44 @@ Si seguimos los mismos pasos que acabamos de seguir con unos CameraBounds más l
 ![Gif de demostración 4](demo4.gif)
 
 e) Añadir un objeto que genere una vibración en la cámara cuando A choca con él.
+
+Para este ejercicio crearemos un GameObject de Goblin arrastrando uno de sus sprites a escena. Le añadiremos un componente Chinemachine Collision Impulse Source y un BoxCollider2D con el que deberá colisionar nuestra zombie. Además de esto, deberemos añadir una extensión de tipo Cinemachine Impulse Listener a la cámara de nuestra zombie. Deberemos asegurarnos de que tanto el componente Impulse Source como el Impulse Listener tengan el mismo valor en sus parámetros Impulse Channel y CHannel Mask, respectivamente. Hecho esto, nuestra cámara vibrará en cuanto nuestra zombie colisione con el ogro. Este es el resultado:
+
+![Gif de demostración 5](demo5.gif)
+
 f) Agregar una tercera cámara (C) que siga a un personaje que no sea el jugador (sólo uno).
+
+Ahora añadiremos una nueva cámara 2D que siga al ogro de manera similar a como la creamos para la zombie, en `GameObject -> Cinemachine -> 2D Camera` y referenciando al ogro desde el atributo Follow de la cámara virtual.
+
 g) Seleccionar un conjunto de teclas que permitan hacer el cambio entre las cámaras A y C . (Habilitar/Deshabilitar el gameobject de la cámara virtual)
+
+Para este ejercicio, dentro del script PlayerController que posee nuestra zombie, añadiremos un atributo público para la cámara virtual, que deberemos referenciar desde el editor. Con ese parámetro, en el método Update() del mismo script comprobaremos que haya alguna cámara referenciada y que se haya pulsado la tecla C. Si ambas condiciones se cumplen, habilitaremos o deshabilitaremos dicha cámara:
+
+```
+public class PlayerController : MonoBehaviour
+{
+    [...]
+    public CinemachineVirtualCamera _cmVirtualCamera;
+    
+    [...]
+
+    void Update()
+    {
+        [...]
+        
+        // Manage camera change
+        if (_cmVirtualCamera && Input.GetKeyDown(KeyCode.C))
+        {
+            _cmVirtualCamera.enabled = !_cmVirtualCamera.enabled;
+        }
+    }
+    
+    [...]
+}
+```
+
+Cada vez que pulsemos la tecla C para cambiar de cámara, veremos cómo se realiza una transición suave entre la cámara recientemente deshabilitada y la cámara del ogro, que pasa a ser la cámara con mayor prioridad de las que quedan activas. Este es el resultado:
+
+![Gif de demostración 6](demo6.gif)
+
 h) Extra: Generar una vibración en la cámara cada vez que se pulse la tecla de disparo. Agregar un perfil de ruido a la cámara, y modificar las propiedades de amplitud y frecuencia al component Noise
