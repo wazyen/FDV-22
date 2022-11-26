@@ -51,7 +51,7 @@ Ahora añadiremos una nueva cámara 2D que siga al ogro de manera similar a como
 
 g) Seleccionar un conjunto de teclas que permitan hacer el cambio entre las cámaras A y C . (Habilitar/Deshabilitar el gameobject de la cámara virtual)
 
-Para este ejercicio, dentro del script PlayerController que posee nuestra zombie, añadiremos un atributo público para la cámara virtual, que deberemos referenciar desde el editor. Con ese parámetro, en el método Update() del mismo script comprobaremos que haya alguna cámara referenciada y que se haya pulsado la tecla C. Si ambas condiciones se cumplen, habilitaremos o deshabilitaremos dicha cámara:
+Para este ejercicio, dentro del script PlayerController que posee nuestra zombie, añadiremos un atributo público para la cámara virtual, que deberemos referenciar desde el editor. Con ese parámetro, en el método Update() del mismo script comprobaremos que haya alguna cámara referenciada y que se haya pulsado la tecla Q. Si ambas condiciones se cumplen, habilitaremos o deshabilitaremos dicha cámara:
 
 ```
 public class PlayerController : MonoBehaviour
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         [...]
         
         // Manage camera change
-        if (_cmVirtualCamera && Input.GetKeyDown(KeyCode.C))
+        if (_cmVirtualCamera && Input.GetKeyDown(KeyCode.Q))
         {
             _cmVirtualCamera.enabled = !_cmVirtualCamera.enabled;
         }
@@ -76,8 +76,60 @@ public class PlayerController : MonoBehaviour
 }
 ```
 
-Cada vez que pulsemos la tecla C para cambiar de cámara, veremos cómo se realiza una transición suave entre la cámara recientemente deshabilitada y la cámara del ogro, que pasa a ser la cámara con mayor prioridad de las que quedan activas. Este es el resultado:
+Cada vez que pulsemos la tecla Q para cambiar de cámara, veremos cómo se realiza una transición suave entre la cámara recientemente deshabilitada y la cámara del ogro, que pasa a ser la cámara con mayor prioridad de las que quedan activas. Este es el resultado:
 
 ![Gif de demostración 6](demo6.gif)
 
 h) Extra: Generar una vibración en la cámara cada vez que se pulse la tecla de disparo. Agregar un perfil de ruido a la cámara, y modificar las propiedades de amplitud y frecuencia al component Noise
+
+Para la realización de este ejercicio hemos seguido la siguiente serie de pasos:
+
+1. Hemos cambiado el atributo Noise de la cámara virtual de nuestra zombie de none a BasicMultiChannelPerlin.
+2. Dentro de ese mismo desplegable, hemos establecido una ganancia de amplitud de 0.1 y una ganancia de frecuencia de 10. Esto se debe a que queremos que nuestra vibración tenga una amplitud muy acotada pero a la vez que sea un movimiento muy violento, es decir, muy rápido.
+3. Aquí viene la parte complicada del ejercicio. El atributo clave es NoiseProfile. Cuando este tenga un valor válido, la vibración se producirá; mientras no tenga ningún valor, no se producirá ninguna vibración. Este es el parámetro que debremos controlar desde script. Pero no es tan sencillo, puesto que este atributo requiere que le pasemos un asset como valor. Para ello, deberemos añadir un parámetro público NoiseSettings en nuestro script de PlayerController y meternos en el paquete de Cinemachine desde el explorador del proyecto para buscar los assets de NoiseSettings que tiene el paquete predefinidos, que son los mismos que se nos mostrarán si abrimos el desplegable de NoiseSettings desde el editor. En nuestro caso, decidimos usar el Handheld_normal_extreme. Este es el que referenciamos al PlayerController.
+4. Una vez tenemos todo listo, simplemente desde el script de PlayerController deberemos obtener el valor del componente BasicMultiChannelPerlin de la cámara virtual en el Start y comprobar en Update que la tecla correspondiente, en nuestro caso la E, esté siendo pulsada y, en caso afirmativo, asignar al componente CinemachineBasicMultiChannelPerlin el NoiseSettings que hayamos escogido. En caso de que la tecla no esté siendo pulsada, asignaremos el valor null.
+
+Este es el código resultante:
+
+```
+
+public class PlayerController : MonoBehaviour
+{
+    [...]
+    
+    public CinemachineVirtualCamera _cmVirtualCamera;
+    public CinemachineBasicMultiChannelPerlin _cmPerlin;
+    public NoiseSettings _cmNoiseProfile;
+    
+    void Start()
+    {
+        [...]
+        if (_cmVirtualCamera)
+        {
+            _cmPerlin = _cmVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        }
+    }
+
+    void Update()
+    {
+        // Manage camera shake
+        if (_cmPerlin)
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                _cmPerlin.m_NoiseProfile = _cmNoiseProfile;
+            }
+            else
+            {
+                _cmPerlin.m_NoiseProfile = null;
+            }
+        }
+    }
+    
+    [...]
+}
+```
+
+Y este es el resultado:
+
+![Gif de demostración 7](demo7.gif)
