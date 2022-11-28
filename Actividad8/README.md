@@ -4,7 +4,7 @@ El objetivo de esta actividad es desarrollar una escena 2D en la que se incluyan
 
 a) Cámara (A) con seguimiento al jugador. Se debe configurar el seguimiento hacia adelante. Esta cámara es la que debe tener la máxima prioridad.
 
-Crearemos una escena con un personaje zombie que heredaremos de otras actividades. Después, añadiremos un `GameObject -> Cinemachine -> 2D Camera`. En el atributo Follow referenciaremos al jugador, en `Body -> Tracked Obect Offset` daremos un valor positivo a la X, para que la cámara siempre esté enfocada hacia adelante con respecto al personaje. Por defecto, el atributo Priority es 10. Podemos subir ese valor o asegurarnos luego de que ninguna cámara lo supere. Así, esta será siempre la cámara con máxima prioridad.
+Crearemos una escena con un personaje zombie que heredaremos de otras actividades. Después, añadiremos un `GameObject -> Cinemachine -> 2D Camera`. En el atributo Follow referenciaremos al jugador, en `Body -> Tracked Object Offset` daremos un valor positivo a la X, para que la cámara siempre esté enfocada hacia adelante con respecto al personaje. Por defecto, el atributo Priority es 10. Podemos subir ese valor o asegurarnos luego de que ninguna cámara lo supere. Así, esta será siempre la cámara con máxima prioridad.
 
 b) Cámara (B) con seguimiento a un grupo de personajes que no sean el jugador. La zona donde no se activa el seguimiento debe ser mayor que la del personaje.
 
